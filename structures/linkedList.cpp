@@ -1,4 +1,6 @@
+// this linked list can be used as queue and stack.
 #include <iostream>
+#include <string>
 using namespace std;
 
 struct lnode{
@@ -11,21 +13,32 @@ private:
     lnode *head, *tail;
 public:
     llist(){
-        head = NULL;
-        tail = NULL;
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    string toString(){
+        string ans = "[";
+        lnode *tmp = head;
+        while (tmp != nullptr) {
+            ans += to_string(tmp->value);
+            ans += ", ";
+            tmp = tmp->next;
+        }
+        return ans.substr(0, ans.length() - 2) + "]";
     }
 
     void enqueue(int value){
         // add to the tail
         lnode *node = new lnode;
         node->value = value;
-        node->next = NULL;
-        if(head != NULL){
+        node->next = nullptr;
+        if(head != nullptr){
             node->pre = tail;
             tail->next = node;
             tail = node;
         } else{
-            node->pre = NULL;
+            node->pre = nullptr;
             head = node;
             tail = node;
         }
@@ -35,13 +48,13 @@ public:
         // add to the head
         lnode *node = new lnode;
         node->value = value;
-        node->pre = NULL;
-        if(head != NULL){
+        node->pre = nullptr;
+        if(head != nullptr){
             node->next = head;
             head->pre = node;
             head = node;
         } else{
-            node->pre = NULL;
+            node->pre = nullptr;
             head = node;
             tail = node;
         }
@@ -49,40 +62,66 @@ public:
 
     int dequeue(){
         // remove the head
-        if(head != NULL){
+        if(head != nullptr){
             lnode *tmp;
             tmp = head;
             int ans = head->value;
             head = head->next;
-            if(head != NULL){
-                head->pre = NULL;
+            if(head != nullptr){
+                head->pre = nullptr;
             } else{
-                tail = NULL;
+                tail = nullptr;
             }
             delete tmp;
             return ans;
         } else {
-            cerr << "No more nodes!" << endl;
+            cerr << "Error, no more nodes!" << endl;
+            return -1;
         }
     }
 
+
     int pop(){
         // remove the tail
-        if(tail != NULL){
+        if(tail != nullptr){
             lnode *tmp;
             tmp = tail;
             int ans = tail->value;
             tail = tail->pre;
-            if (tail != NULL) {
-                tail->next = NULL;
+            if (tail != nullptr) {
+                tail->next = nullptr;
             } else {
-                head = NULL;
+                head = nullptr;
             }
             delete tmp;
             return ans;
         } else {
-            cerr << "No more nodes!" << endl;
+            cerr << "Error, no more nodes!" << endl;
+            return -1;
         }
+    }
+
+    void reverse(){
+        lnode *tmp = head;
+        while (tmp != nullptr) {
+            lnode *nNode = tmp->next;
+            tmp->next = tmp->pre;
+            tmp->pre = nNode;
+            tmp = nNode;
+        }
+        lnode *oldHead = head;
+        head = tail;
+        tail = oldHead;
+    }
+
+    llist* clone(){
+        llist *ans = new llist();
+        lnode *h = head;
+        while(h != nullptr){
+            ans->enqueue(h->value);
+            h = h->next;
+        }
+        return ans;
     }
 };
 
@@ -93,7 +132,19 @@ int main(){
     ll.enqueue(3);
     ll.enqueue(4);
     ll.pushHead(0);
+    llist ll2 = *ll.clone();
     cout << ll.dequeue() << endl << ll.pop() << endl << ll.dequeue() << endl << ll.pop() << endl << ll.dequeue()
          << endl;
+
+    cout << ll2.dequeue() << " " << ll2.dequeue() << " " << ll2.dequeue() << " " << ll2.dequeue() << endl;
+
+    ll.enqueue(1);
+    ll.enqueue(2);
+    ll.enqueue(3);
+    ll.enqueue(4);
+    ll.pushHead(0);
+    ll.reverse();
+    cout << ll.toString() << endl;
+    cout << ll.dequeue() << " " << ll.dequeue() << " " << ll.dequeue() << " " << ll.dequeue() << endl;
     return 0;
 };
