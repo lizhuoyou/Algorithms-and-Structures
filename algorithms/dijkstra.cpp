@@ -32,7 +32,9 @@ dkstrGraph::~dkstrGraph() {
 }
 
 void dkstrGraph::addEdge(int src, int dest, int weight) {
-    adjList[src].push_back(make_pair(dest, weight));
+    adjList[src].emplace_back(dest, weight);
+    // the edge is single direction now; uncomment the following for double direction edge
+    // adjList[dest].emplace_back(src, weight);
 }
 
 void dkstrGraph::dijkstra(int start, int dest){
@@ -42,23 +44,46 @@ void dkstrGraph::dijkstra(int start, int dest){
     for(int i = 0; i < Vnum; i++) distances[i] = INT_MAX;
     distances[start] = 0;
     pq.push(make_pair(0, start));
-    int ansDist = distances[dest];
 
     while (!pq.empty()) {
         int src = pq.top().second;
+        if(src == dest) break;      // end when we find distance the destiny(when the distance is the shortest)
         pq.pop();
 
         list<iPair>::iterator it;
         for (it = adjList[src].begin(); it != adjList[src].end(); it++) {
-            int dist = (*it).first;
-            int v = (*it).second;
-            int newDist = distances[src] + dist;
-            if (newDist < ansDist && newDist < distances[v]) {
+            int v = (*it).first;
+            int weight = (*it).second;
+            int newDist = distances[src] + weight;
+            if (newDist < distances[v]) {
                 distances[v] = newDist;
-                if (v == dest) ansDist = newDist;
-                pq.push(make_pair(distances[v], v));
+                pq.push(make_pair(newDist, v));
             }
         }
     }
-    cout << "The shortest distance is " << ansDist;
+
+    cout << "The shortest distance from " << start << " to " << dest << " is " << distances[dest];
+}
+
+int main(){
+    dkstrGraph g(9);
+
+    g.addEdge(0, 1, 4);
+    g.addEdge(0, 7, 8);
+    g.addEdge(1, 2, 8);
+    g.addEdge(1, 7, 11);
+    g.addEdge(2, 3, 7);
+    g.addEdge(2, 8, 2);
+    g.addEdge(2, 5, 4);
+    g.addEdge(3, 4, 9);
+    g.addEdge(3, 5, 14);
+    g.addEdge(4, 5, 10);
+    g.addEdge(5, 6, 2);
+    g.addEdge(6, 7, 1);
+    g.addEdge(6, 8, 6);
+    g.addEdge(7, 8, 7);
+
+    g.dijkstra(0,8);
+
+    return 0;
 }
