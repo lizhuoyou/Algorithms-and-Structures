@@ -17,6 +17,15 @@ public:
         tail = nullptr;
     }
 
+    ~llist(){
+        lnode *tmp = head;
+        while (tmp != nullptr) {
+            lnode *n = tmp->next;
+            delete tmp;
+            tmp = n;
+        }
+    }
+
     string toString(){
         string ans = "[";
         lnode *tmp = head;
@@ -54,7 +63,7 @@ public:
             head->pre = node;
             head = node;
         } else{
-            node->pre = nullptr;
+            node->next = nullptr;
             head = node;
             tail = node;
         }
