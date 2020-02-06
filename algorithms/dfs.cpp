@@ -4,7 +4,6 @@
 using namespace std;
 
 class DFS_graph{
-private:
     int Vamount;
     list<int> *adjList;
     void DFSplus(int v, bool visited[]);        // used by DFS

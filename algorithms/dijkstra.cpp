@@ -9,7 +9,6 @@ using namespace std;
 typedef pair<int, int> iPair;
 
 class dkstrGraph{
-private:
     int Vnum;
     list<iPair> *adjList;
 public:

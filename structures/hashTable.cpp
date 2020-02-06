@@ -5,7 +5,6 @@
 using namespace std;
 
 class hashTable{
-private:
     int size, tableSize;
     double maxLoad;
     list<int> *table{};

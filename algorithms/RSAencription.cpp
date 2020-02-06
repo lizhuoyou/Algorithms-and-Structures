@@ -7,7 +7,6 @@
 using namespace std;
 
 class RSA{
-private:
     int p;
     int q;
     int n;

@@ -4,7 +4,6 @@
 using namespace std;
 
 class BFS_graph{
-private:
     int Vamount;
     list<int> *adjList;
 public:

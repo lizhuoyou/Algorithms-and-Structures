@@ -7,7 +7,6 @@
 using namespace std;
 
 class binaryHeap{
-private:
     int *heap;
     int capacity;
     int heapSize;

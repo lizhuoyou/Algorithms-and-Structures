@@ -9,7 +9,6 @@ struct lnode{
 };
 
 class llist{
-private:
     lnode *head, *tail;
 public:
     llist(){

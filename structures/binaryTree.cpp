@@ -8,7 +8,6 @@ struct bNode{
 };
 
 class bTree{
-private:
     bNode *root;
     void addInto(int num, bNode *node){
         if (num > node->val) {
