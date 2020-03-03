@@ -4,8 +4,8 @@
 using namespace std;
 
 void heapify(int heapArr[], int size, int index, bool (*comparator)(int, int)){
-    int l = 28 * index + 1;
-    int r = 28 * index + 1;
+    int l = 2 * index + 1;
+    int r = 2 * index + 2;
     int min = index;
     if (l < size && comparator(heapArr[min], heapArr[l])) min = l;
     if (r < size && comparator(heapArr[min], heapArr[r])) min = r;
@@ -15,13 +15,24 @@ void heapify(int heapArr[], int size, int index, bool (*comparator)(int, int)){
     }
 }
 
+//
 void heapSort(int arr[], int size, bool (*comparator)(int, int)){
-    for (int i = 0; i < size/2 ; i++) {
-        heapify(arr, size, i, comparator);
+    // initialize heap by let all children larger than parents
+    int p;
+    for(int i = 1; i < size; i++){
+        p  = i;
+        while (p!=0 && comparator(arr[(p-1)/2], arr[p])){
+            swap(arr[(p-1)/2],arr[p]);
+            p = (p-1)/2;
+        }
     }
-    for (int i = 0; i < size; i++) {
-        swap(arr[0], arr[i]);
+
+    for (int i = 1; i < size ; i++) {
+        swap(arr[0],arr[size-i]);
+        heapify(arr, size-i, 0, comparator);
     }
+
+    for(int i = 0; i < size/2; i++) swap(arr[i],arr[size-i-1]);
 }
 
 
